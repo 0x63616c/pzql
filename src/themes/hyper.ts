@@ -1,36 +1,5 @@
 import type { Theme } from "./index";
 
-// Derived from theme.json - Hyper dark theme
-export const hyper: Theme = {
-	background: "#000000",
-	foreground: "#f1f1f0",
-	card: "#0a0a0a",
-	cardForeground: "#f1f1f0",
-	popover: "#111111",
-	popoverForeground: "#f1f1f0",
-	primary: "#57c7ff",
-	primaryForeground: "#000000",
-	secondary: "#0d0d0d",
-	secondaryForeground: "#f1f1f0",
-	muted: "#0d0d0d",
-	mutedForeground: "#686868",
-	accent: "#161616",
-	accentForeground: "#f1f1f0",
-	destructive: "#ff5c57",
-	border: "#1a1a1a",
-	input: "#1a1a1a",
-	ring: "#57c7ff",
-	radius: "0.375rem",
-	sidebar: "#000000",
-	sidebarForeground: "#f1f1f0",
-	sidebarPrimary: "#57c7ff",
-	sidebarPrimaryForeground: "#000000",
-	sidebarAccent: "#161616",
-	sidebarAccentForeground: "#f1f1f0",
-	sidebarBorder: "#1a1a1a",
-	sidebarRing: "#57c7ff",
-};
-
 // Derived from theme.json - Hyper Night dark theme (blue-tinted variant)
 export const hyperNight: Theme = {
 	background: "#000000",
