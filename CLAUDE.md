@@ -36,6 +36,8 @@ Use the **Context7 MCP** to fetch up-to-date docs for our stack (Tauri v2, React
 ## Git
 Keep commits atomic - one logical change per commit. Don't bundle unrelated changes together.
 
+**Always use the `/commit` skill to commit.** No exceptions - not for one-liners, quick fixes, small changes, urgent commits, or any other rationalization. Never run `git commit` directly. Always invoke the commit skill.
+
 ## Git Hooks (lefthook)
 Pre-commit hooks run automatically via **lefthook** (config in `lefthook.yml`):
 - **Biome** - lint + format staged TS/JS/JSON/CSS files
