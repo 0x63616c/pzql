@@ -29,21 +29,15 @@ tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }
 specta-typescript = "0.0.9"
 
 [features]
-dev-server = ["dep:axum", "dep:tokio", "dep:futures-util"]
+dev-server = []
 
 [dependencies.axum]
 version = "0.8"
 features = ["ws"]
-optional = true
 
 [dependencies.tokio]
 version = "1"
 features = ["full"]
-optional = true
 
 [dependencies.futures-util]
 version = "0.3"
-optional = true
-
-[dev-dependencies]
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
