@@ -1,10 +1,36 @@
 {
 	"permissions": {
+		"deny": ["Bash(git worktree:*)", "EnterWorktree"],
 		"allow": [
+			"Bash(git add:*)",
 			"Bash(git commit:*)",
+			"Bash(git status:*)",
+			"Bash(git diff:*)",
+			"Bash(git log:*)",
+			"Bash(git branch:*)",
+			"Bash(git stash:*)",
+			"Bash(bun:*)",
 			"Bash(bunx:*)",
 			"Bash(cargo fmt:*)",
-			"Bash(cargo clippy:*)"
+			"Bash(cargo clippy:*)",
+			"Bash(cargo check:*)",
+			"Bash(cargo build:*)",
+			"Bash(cargo test:*)",
+			"Bash(ls:*)",
+			"Bash(mkdir:*)",
+			"Bash(cp:*)",
+			"Bash(mv:*)",
+			"Bash(chmod:*)",
+			"Bash(test:*)",
+			"Read",
+			"Write",
+			"Edit",
+			"Glob",
+			"Grep",
+			"WebFetch",
+			"WebSearch",
+			"Task",
+			"NotebookEdit"
 		]
 	},
 	"hooks": {
