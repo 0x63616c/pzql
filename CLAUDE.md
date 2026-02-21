@@ -22,11 +22,18 @@ Always use **bun** (not npm/yarn).
 ## Testing
 Use **Playwright CLI** to test the app. Run tests with `bunx playwright test`.
 
+## Library Selection Philosophy
+Pick libraries that are **typesafe, have good guardrails, and are hard for LLMs to get wrong**. When an LLM makes a mistake, it should be obvious - caught by the type checker, not hidden at runtime. Prefer small API surfaces over flexible-but-footgunny ones. This applies to every dependency choice.
+
 ## Frontend Stack
 - **Vite** - bundler/dev server
 - **shadcn/ui** - component library
 - **Tailwind CSS** - styling
+- **Heroicons** - icon library (outline + solid variants, by Tailwind team)
 - **Biome** - linter + formatter (replaces ESLint/Prettier)
+- **Zustand** - state management (tiny API, excellent TypeScript inference, hard to misuse)
+- **TanStack Router** - routing (fully typesafe routes, params, and search params - compile-time errors for wrong paths)
+- **Playwright** - end-to-end testing (run via `bunx playwright test`)
 
 Lean on these libraries - do not reinvent the wheel. Use shadcn components and Tailwind utilities instead of writing custom CSS or building UI primitives from scratch. Every line of code is a liability.
 
@@ -61,6 +68,16 @@ To install hooks after cloning: `bunx lefthook install`
 - `src-tauri/src/` - Rust Tauri backend (commands, plugins)
 - IPC via `@tauri-apps/api` - frontend calls Rust with `invoke()`
 - New Tauri commands need: Rust fn in `lib.rs` + registered in `generate_handler![]` + TypeScript wrapper in `src/`
+
+## Theming
+Supports multiple themes (not just light/dark). All themes live in `src/themes/`, one file per theme.
+
+- A TypeScript `Theme` interface is the **single source of truth** for all design tokens - colors, border radius, shadows, and anything else that varies between themes.
+- Each theme is an object satisfying that interface. Missing a token = compile error.
+- A small utility converts a theme object to CSS custom properties at runtime.
+- shadcn/ui and Tailwind consume the CSS variables as normal (`bg-background`, `text-foreground`, etc.).
+- **Rule**: if it changes between themes, it's a token in the `Theme` interface. If it doesn't change, it's a Tailwind utility or a constant. Don't tokenize everything - just what varies.
+- **Never hardcode colors.** No `bg-red-500`, `text-blue-300`, `bg-[#ff0000]`, `text-[rgb(...)]`, or inline `color`/`background` styles. Always use theme tokens: `bg-background`, `text-foreground`, `bg-primary`, `text-muted-foreground`, `border-border`, etc. The only exception is `transparent`, `inherit`, and `currentColor`.
 
 ## Style
 - Never use emojis unless the user explicitly asks for them.
