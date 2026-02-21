@@ -35,24 +35,10 @@ bun run dev
 # Open http://localhost:1420 in Chrome
 ```
 
-The frontend detects no Tauri runtime and routes all IPC calls over WebSocket to port 1421. Real Rust runs. Use Peekaboo pointed at Chrome to verify visually.
+The frontend detects no Tauri runtime and routes all IPC calls over WebSocket to port 1421. Real Rust runs. Use Playwright pointed at Chrome to verify visually.
 
-### Peekaboo Usage (MCP)
-Key tools:
-- `see` - capture a screenshot with annotated element IDs. Always call this first.
-- `click` - click elements by ID (`on: "B1"`), text query (`query: "Submit"`), or coordinates.
-- `type` - type text into the focused element or a specific element (`on: "T1"`).
-- `scroll` - scroll on an element or at the current mouse position.
-- `hotkey` - press keyboard shortcuts (e.g. Cmd+S, Cmd+W).
-- `app` - launch, quit, switch, or focus applications.
-- `window` - focus, move, resize, close, or maximize windows.
-- `menu` - list or click native menu bar items (e.g. `path: "File > Save"`).
-- `dialog` - interact with system dialogs (click buttons, input text, handle file panels).
-- `clipboard` - read/write clipboard contents.
-- `image` - capture screenshots without annotation.
-
-### Screenshots
-Always save screenshots to `.screenshots/` in the project root (e.g. `path: "/Users/calum/code/github.com/0x63616c/pzql/.screenshots/my-screenshot.png"`). Never save to `/tmp` or the desktop.
+### Visual Verification
+Use the Playwright CLI (`npx playwright`) to automate Chrome for visual verification. Save screenshots to `.screenshots/` in the project root - never to `/tmp` or the desktop.
 
 ## Library Selection Philosophy
 Pick libraries that are **typesafe, have good guardrails, and are hard for LLMs to get wrong**. When an LLM makes a mistake, it should be obvious - caught by the type checker, not hidden at runtime. Prefer small API surfaces over flexible-but-footgunny ones. This applies to every dependency choice.
@@ -181,7 +167,7 @@ bun run dev
 # Open http://localhost:1420 in Chrome
 ```
 
-Full app with real Rust backend runs in Chrome. Claude uses Peekaboo on Chrome to verify.
+Full app with real Rust backend runs in Chrome. Claude uses Playwright on Chrome to verify.
 
 ### Key files
 
