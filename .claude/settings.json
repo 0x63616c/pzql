@@ -1,15 +1,1 @@
-{
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cd /Users/calum/code/github.com/0x63616c/pzql && bun run build 2>&1 | tail -20"
-          }
-        ]
-      }
-    ]
-  }
-}
+{}
