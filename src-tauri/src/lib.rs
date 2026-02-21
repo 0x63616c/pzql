@@ -1,7 +1,7 @@
 use pzql_macros::command;
 use tauri_specta::{collect_commands, Builder};
 
-#[cfg(feature = "dev-server")]
+#[cfg(any(feature = "dev-server", debug_assertions))]
 mod dev_server;
 
 #[command]
@@ -26,7 +26,6 @@ pub fn run() {
     {
         let rt = tokio::runtime::Runtime::new().unwrap();
         rt.block_on(dev_server::run());
-        return;
     }
 
     #[cfg(not(feature = "dev-server"))]
@@ -36,6 +35,10 @@ pub fn run() {
             .invoke_handler(builder.invoke_handler())
             .setup(move |app| {
                 builder.mount_events(app);
+
+                #[cfg(debug_assertions)]
+                tauri::async_runtime::spawn(dev_server::run());
+
                 Ok(())
             })
             .run(tauri::generate_context!())
