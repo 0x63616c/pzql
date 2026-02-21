@@ -1,4 +1,4 @@
-no_tty: true
+output: false
 
 pre-commit:
   parallel: true
