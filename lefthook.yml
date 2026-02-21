@@ -27,3 +27,5 @@ commit-msg:
   commands:
     conventional-commit:
       run: 'grep -qE "^(feat|fix|chore|docs|style|refactor|test|build|ci|perf|revert)(\(.+\))?!?: .+" {1} || { echo "Commit message must follow conventional commits: <type>: <description>"; exit 1; }'
+    no-co-authored-by:
+      run: '! grep -qi "co-authored-by" {1} || { echo "Co-Authored-By trailers are not allowed in commit messages."; exit 1; }'

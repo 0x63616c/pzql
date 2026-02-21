@@ -1,4 +1,8 @@
 {
+	"attribution": {
+		"commit": "",
+		"pr": ""
+	},
 	"hooks": {
 		"PreToolUse": [
 			{
@@ -16,6 +20,15 @@
 					{
 						"type": "command",
 						"command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-tool-use/block-git-no-verify.sh"
+					}
+				]
+			},
+			{
+				"matcher": "Bash",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-tool-use/block-co-authored-by.sh"
 					}
 				]
 			}
