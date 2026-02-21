@@ -38,7 +38,7 @@ jobs:
         run: cargo fmt --check --manifest-path src-tauri/Cargo.toml
 
       - name: Clippy
-        run: cargo clippy --manifest-path src-tauri/Cargo.toml -- -D warnings
+        run: cargo clippy --workspace --all-features --manifest-path src-tauri/Cargo.toml -- -D warnings
 
-      - name: Compile check
-        run: cargo check --manifest-path src-tauri/Cargo.toml
+      - name: Test
+        run: cargo test --workspace --all-features --manifest-path src-tauri/Cargo.toml
