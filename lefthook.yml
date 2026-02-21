@@ -22,6 +22,14 @@ pre-commit:
       exclude: "**/target/**"
       root: "src-tauri/"
       run: cargo clippy -- -D warnings
+    final-newline:
+      glob: "*.{ts,tsx,js,jsx,json,css,rs,toml,yml,yaml,md,html}"
+      run: |
+        fail=0
+        for f in {staged_files}; do
+          [ -f "$f" ] && [ -s "$f" ] && [ "$(tail -c1 "$f" | wc -l)" -eq 0 ] && echo "Missing final newline: $f" && fail=1
+        done
+        exit $fail
 
 commit-msg:
   commands:
