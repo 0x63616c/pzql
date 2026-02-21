@@ -22,9 +22,21 @@ Use **Playwright CLI** to test the app. Run tests with `bunx playwright test`.
 
 Lean on these libraries — do not reinvent the wheel. Use shadcn components and Tailwind utilities instead of writing custom CSS or building UI primitives from scratch. Every line of code is a liability.
 
+## Documentation Lookup
+Use the **Context7 MCP** to fetch up-to-date docs for our stack (Tauri v2, React 19, Rust, Tailwind CSS, shadcn/ui, Vite, Playwright, Biome) before writing code that depends on library APIs. Don't guess at APIs from training data — pull current docs via Context7.
+
+## Git
+Keep commits atomic — one logical change per commit. Don't bundle unrelated changes together.
+
 ## Linting & Formatting
 - **Frontend (TS/CSS/JSON)**: `bunx @biomejs/biome check --write .`
 - **Rust**: `cargo fmt` (formatting) + `cargo clippy` (linting)
+
+## Hooks
+- All hook scripts live in `.claude/hooks/<hook-type>/` (e.g. `pre-tool-use/`, `post-tool-use/`, `notification/`).
+- Always use a standalone script file — never inline commands in settings JSON.
+- One script per concern. Keep scripts focused and name them descriptively.
+- Reference scripts in settings via `"$CLAUDE_PROJECT_DIR"/.claude/hooks/<hook-type>/<script>`.
 
 ## Architecture
 - `src/` — React/TypeScript frontend (Vite)
