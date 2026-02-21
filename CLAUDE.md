@@ -75,6 +75,8 @@ Keep commits atomic - one logical change per commit. Don't bundle unrelated chan
 
 **Always use the `/commit` skill to commit.** No exceptions - not for one-liners, quick fixes, small changes, urgent commits, or any other rationalization. Never run `git commit` directly. Always invoke the commit skill.
 
+**Conventional commits** - all commit messages follow the format `<type>[scope][!]: <description>`. The `/commit` skill has the full reference. The critical rule: any commit that changes public API, IPC contracts, config formats, or behavior that downstream code depends on **must** have `!` after the type (e.g. `feat!:`, `refactor(ipc)!:`) and optionally a `BREAKING CHANGE:` footer explaining migration steps.
+
 ## Git Hooks (lefthook)
 Pre-commit hooks run automatically via **lefthook** (config in `lefthook.yml`):
 - **Biome** - lint + format staged TS/JS/JSON/CSS files
