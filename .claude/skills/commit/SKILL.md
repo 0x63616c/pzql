@@ -48,7 +48,9 @@ Update ws-bindings.ts call signatures accordingly.
 
 The `!` is the minimum - always include it. The footer is for migration details when the breakage isn't obvious from the description.
 
-Examples of breaking changes:
+Use your best judgement to determine what counts as breaking. These are just examples to calibrate:
+
+Breaking:
 - Renaming or removing a Tauri command
 - Changing a command's argument or return type
 - Changing the IPC protocol or message format
@@ -56,7 +58,7 @@ Examples of breaking changes:
 - Changing config file format or location
 - Removing a public export
 
-Examples of NON-breaking changes:
+Non-breaking:
 - Adding a new command (additive)
 - Adding an optional parameter with a default
 - Internal refactors that don't change external behavior
