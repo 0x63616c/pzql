@@ -1,3 +1,7 @@
+[workspace]
+members = [".", "crates/pzql-ipc", "crates/pzql-macros"]
+resolver = "2"
+
 [package]
 name = "pzql"
 version = "0.1.0"
@@ -5,12 +9,7 @@ description = "A Tauri App"
 authors = ["you"]
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [lib]
-# The `_lib` suffix may seem redundant but it is necessary
-# to make the lib name unique and wouldn't conflict with the bin name.
-# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
 name = "pzql_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
@@ -22,4 +21,26 @@ tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+pzql-ipc = { path = "crates/pzql-ipc" }
+pzql-macros = { path = "crates/pzql-macros" }
+inventory = "0.3"
+specta = "=2.0.0-rc.22"
+tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }
+specta-typescript = "0.0.9"
 
+[features]
+dev-server = ["dep:axum", "dep:tokio", "dep:futures-util"]
+
+[dependencies.axum]
+version = "0.8"
+features = ["ws"]
+optional = true
+
+[dependencies.tokio]
+version = "1"
+features = ["full"]
+optional = true
+
+[dependencies.futures-util]
+version = "0.3"
+optional = true
