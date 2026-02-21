@@ -44,3 +44,6 @@ optional = true
 [dependencies.futures-util]
 version = "0.3"
 optional = true
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }

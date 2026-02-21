@@ -1,5 +1,7 @@
-#[tauri::command]
-fn greet(name: &str) -> String {
+use pzql_macros::command;
+
+#[command]
+fn greet(name: String) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
