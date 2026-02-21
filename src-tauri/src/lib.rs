@@ -16,7 +16,8 @@ pub fn run() {
     #[cfg(debug_assertions)]
     builder
         .export(
-            specta_typescript::Typescript::default().header("// AUTO-GENERATED - do not edit"),
+            specta_typescript::Typescript::default()
+                    .header("// @ts-nocheck\n// AUTO-GENERATED - do not edit"),
             "../src/bindings.ts",
         )
         .expect("failed to export typescript bindings");
