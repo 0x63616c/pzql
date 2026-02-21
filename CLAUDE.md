@@ -14,10 +14,9 @@ A cross-platform desktop app built with Tauri v2 (React 19 + TypeScript frontend
 Always use **bun** (not npm/yarn).
 
 ## Key Commands
-- `bun run dev` - start Vite dev server (port 1420)
-- `bun run tauri dev` - run full Tauri app in dev mode
-- `bun run build` - type-check + Vite build
-- `bun run tauri build` - package desktop app
+- `bun run app dev` - run full app in dev mode (native window + Vite + WS server for Chrome)
+- `bun run app build` - package desktop app
+- `bun run build` - type-check + Vite build (used by Tauri internally)
 
 ## Testing
 
@@ -26,16 +25,20 @@ Verify UI and backend changes by running the app in Chrome via the dev-server. T
 ### Dev verification workflow
 
 ```sh
-# Terminal 1 - Rust dev-server (auto-recompiles on change)
-cd src-tauri && cargo watch -x 'run --features dev-server'
+# Everything in one command
+bun run app dev
 
-# Terminal 2 - Vite frontend
-bun run dev
-
-# Open http://localhost:1420 in Chrome
+# Native window opens automatically.
+# For Chrome testing, also open http://localhost:1420
 ```
 
-The frontend detects no Tauri runtime and routes all IPC calls over WebSocket to port 1421. Real Rust runs. Use Playwright pointed at Chrome to verify visually.
+In debug builds, the Tauri app spawns a WebSocket server on port 1421 alongside the native window. The frontend detects no Tauri runtime in Chrome and routes all IPC calls over WebSocket. Both Chrome and the native window work simultaneously.
+
+For standalone backend-only iteration (faster Rust compile, no native window):
+```sh
+cd src-tauri && cargo run --features dev-server
+# Open http://localhost:1420 (start Vite separately with: vite)
+```
 
 ### Visual Verification
 Use the Playwright CLI (`npx playwright`) to automate Chrome for visual verification. Save screenshots to `.screenshots/` in the project root - never to `/tmp` or the desktop.
@@ -139,7 +142,7 @@ All frontend-backend communication uses the dual-transport IPC layer. **Never ca
    ```
 2. Add to `collect_commands![]` in `src-tauri/src/lib.rs` (one line - for Tauri IPC + TS types).
 3. Add one line to `src/ws-bindings.ts` - TypeScript will not compile if you forget.
-4. Run `bun run tauri dev` once to regenerate `src/bindings.ts`.
+4. Run `bun run app dev` once to regenerate `src/bindings.ts`.
 5. Call via `commands.myCommand(arg)` imported from `src/ipc.ts`.
 
 ### Adding an event (Rust pushes to frontend)
@@ -158,12 +161,7 @@ All frontend-backend communication uses the dual-transport IPC layer. **Never ca
 ### Dev verification in Chrome
 
 ```sh
-# Terminal 1
-cd src-tauri && cargo run --features dev-server
-
-# Terminal 2
-bun run dev
-
+bun run app dev
 # Open http://localhost:1420 in Chrome
 ```
 
