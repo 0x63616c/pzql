@@ -100,6 +100,25 @@ Supports multiple themes (not just light/dark). All themes live in `src/themes/`
 - **Rule**: if it changes between themes, it's a token in the `Theme` interface. If it doesn't change, it's a Tailwind utility or a constant. Don't tokenize everything - just what varies.
 - **Never hardcode colors.** No `bg-red-500`, `text-blue-300`, `bg-[#ff0000]`, `text-[rgb(...)]`, or inline `color`/`background` styles. Always use theme tokens: `bg-background`, `text-foreground`, `bg-primary`, `text-muted-foreground`, `border-border`, etc. The only exception is `transparent`, `inherit`, and `currentColor`.
 
+## Parallel Work - MANDATORY
+
+<EXTREMELY-IMPORTANT>
+When ANY skill or workflow involves parallel work, multiple independent tasks, or subagents:
+
+**DO NOT USE:**
+- `Task` tool with `subagent_type` to spawn standalone subagents
+- Fire-and-forget `Task` calls running in background
+- Multiple independent `Task` invocations as a substitute for coordination
+
+**ALWAYS USE Agent Teams instead:**
+1. `TeamCreate` - create a team first
+2. `TaskCreate` / `TaskList` / `TaskUpdate` - manage work items in the team's shared task list
+3. `Task` tool WITH `team_name` and `name` parameters - spawn teammates that join the team
+4. `SendMessage` - coordinate between teammates
+
+This applies to ALL superpowers skills that dispatch work in parallel, including but not limited to `dispatching-parallel-agents` and `subagent-driven-development`. No exceptions. If the skill says "spawn subagents" or "dispatch agents", use Agent Teams.
+</EXTREMELY-IMPORTANT>
+
 ## Style
 - Never use emojis unless the user explicitly asks for them.
 - Never use emdashes. Use hyphens or dashes instead, unless the user explicitly asks for emdashes.
