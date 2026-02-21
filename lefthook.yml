@@ -10,14 +10,17 @@ pre-commit:
     cargo-fmt:
       glob: "*.rs"
       exclude: "**/target/**"
+      root: "src-tauri/"
       run: cargo fmt
     cargo-check:
       glob: "*.rs"
       exclude: "**/target/**"
+      root: "src-tauri/"
       run: cargo check
     cargo-clippy:
       glob: "*.rs"
       exclude: "**/target/**"
+      root: "src-tauri/"
       run: cargo clippy -- -D warnings
 
 commit-msg:
