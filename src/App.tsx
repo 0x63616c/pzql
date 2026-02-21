@@ -1,6 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
+import { CounterDemo } from "./components/CounterDemo";
 import "./App.css";
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
 				<button type="submit">Greet</button>
 			</form>
 			<p>{greetMsg}</p>
+			<CounterDemo />
 		</main>
 	);
 }
