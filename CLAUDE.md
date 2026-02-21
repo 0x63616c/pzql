@@ -11,6 +11,19 @@ Always use **bun** (not npm/yarn).
 - `bun run build` — type-check + Vite build
 - `bun run tauri build` — package desktop app
 
+## Testing
+Use **Playwright CLI** to test the app. Run tests with `bunx playwright test`.
+
+## Claude Hooks
+Use [`johnlindquist/claude-hooks`](https://github.com/johnlindquist/claude-hooks) for Claude hook development (full TypeScript hooks). All Claude configuration (hooks, settings, etc.) should be local to this project (`.claude/`) unless explicitly stated to be global.
+
+## Frontend Stack
+- **Vite** — bundler/dev server
+- **shadcn/ui** — component library
+- **Tailwind CSS** — styling
+
+Lean on these libraries — do not reinvent the wheel. Use shadcn components and Tailwind utilities instead of writing custom CSS or building UI primitives from scratch. Every line of code is a liability.
+
 ## Architecture
 - `src/` — React/TypeScript frontend (Vite)
 - `src-tauri/src/` — Rust Tauri backend (commands, plugins)
