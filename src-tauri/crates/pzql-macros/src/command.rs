@@ -1,7 +1,7 @@
 use heck::ToPascalCase;
 use proc_macro2::{Span, TokenStream};
 use quote::quote;
-use syn::{FnArg, Ident, ItemFn, Pat, PatType, Result, Type, parse2};
+use syn::{parse2, FnArg, Ident, ItemFn, Pat, PatType, Result, Type};
 
 pub fn expand(_args: TokenStream, input: TokenStream) -> Result<TokenStream> {
     let func: ItemFn = parse2(input)?;
