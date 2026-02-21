@@ -1,50 +1,70 @@
-import { invoke } from "@tauri-apps/api/core";
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { CounterDemo } from "./components/CounterDemo";
-
 function App() {
-	const [greetMsg, setGreetMsg] = useState("");
-	const [name, setName] = useState("");
-
-	async function greet() {
-		// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-		setGreetMsg(await invoke("greet", { name }));
-	}
-
 	return (
-		<main className="container">
-			<h1>Welcome to Tauri + React</h1>
-
-			<div className="row">
-				<a href="https://vite.dev" target="_blank" rel="noopener">
-					<img src="/vite.svg" className="logo vite" alt="Vite logo" />
-				</a>
-				<a href="https://tauri.app" target="_blank" rel="noopener">
-					<img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-				</a>
-				<a href="https://react.dev" target="_blank" rel="noopener">
-					<img src={reactLogo} className="logo react" alt="React logo" />
-				</a>
+		<main className="min-h-screen bg-background text-foreground p-8 flex flex-col gap-6">
+			<div>
+				<h1 className="text-2xl font-semibold text-foreground">pzql</h1>
+				<p className="text-muted-foreground text-sm mt-1">Theme is working</p>
 			</div>
-			<p>pzql — a cross-platform desktop app.</p>
 
-			<form
-				className="row"
-				onSubmit={(e) => {
-					e.preventDefault();
-					greet();
-				}}
-			>
+			<div className="flex gap-3">
+				<button
+					type="button"
+					className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium"
+				>
+					Primary
+				</button>
+				<button
+					type="button"
+					className="bg-secondary text-secondary-foreground px-4 py-2 rounded-md text-sm font-medium"
+				>
+					Secondary
+				</button>
+				<button
+					type="button"
+					className="bg-destructive text-white px-4 py-2 rounded-md text-sm font-medium"
+				>
+					Destructive
+				</button>
+			</div>
+
+			<div className="bg-card text-card-foreground border border-border rounded-lg p-4 max-w-sm">
+				<h2 className="font-medium text-foreground">Card</h2>
+				<p className="text-muted-foreground text-sm mt-1">
+					This uses card, border, and muted-foreground tokens.
+				</p>
+			</div>
+
+			<div className="flex gap-2">
 				<input
-					id="greet-input"
-					onChange={(e) => setName(e.currentTarget.value)}
-					placeholder="Enter a name..."
+					className="bg-input border border-border text-foreground placeholder:text-muted-foreground px-3 py-2 rounded-md text-sm outline-none focus:ring-2 focus:ring-ring"
+					placeholder="Input field..."
 				/>
-				<button type="submit">Greet</button>
-			</form>
-			<p>{greetMsg}</p>
-			<CounterDemo />
+				<input
+					className="bg-input border border-border text-foreground placeholder:text-muted-foreground px-3 py-2 rounded-md text-sm outline-none focus:ring-2 focus:ring-ring"
+					placeholder="Another input..."
+				/>
+			</div>
+
+			<div className="flex gap-2 flex-wrap">
+				{[
+					"background",
+					"foreground",
+					"card",
+					"primary",
+					"secondary",
+					"muted",
+					"accent",
+					"destructive",
+					"border",
+				].map((token) => (
+					<span
+						key={token}
+						className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded"
+					>
+						{token}
+					</span>
+				))}
+			</div>
 		</main>
 	);
 }
