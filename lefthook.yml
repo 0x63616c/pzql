@@ -19,3 +19,8 @@ pre-commit:
       glob: "*.rs"
       exclude: "**/target/**"
       run: cargo clippy -- -D warnings
+
+commit-msg:
+  commands:
+    conventional-commit:
+      run: 'grep -qE "^(feat|fix|chore|docs|style|refactor|test|build|ci|perf|revert)(\(.+\))?!?: .+" {1} || { echo "Commit message must follow conventional commits: <type>: <description>"; exit 1; }'

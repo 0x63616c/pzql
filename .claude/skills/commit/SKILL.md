@@ -4,4 +4,4 @@ description: Use when the user wants to commit their changes
 user_invocable: true
 ---
 
-Please commit everything.
+Please commit everything using conventional commits. If changes seem unrelated, create seperate commits per change.
