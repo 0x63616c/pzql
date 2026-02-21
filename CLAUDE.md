@@ -20,7 +20,30 @@ Always use **bun** (not npm/yarn).
 - `bun run tauri build` - package desktop app
 
 ## Testing
-Use **Playwright CLI** to test the app. Run tests with `bunx playwright test`.
+Use **Peekaboo** (MCP server) to test the running app. After making UI changes, verify them visually by controlling the app - take screenshots, click elements, type text, and confirm things work as expected. Don't just write code and hope it works - see it.
+
+### Peekaboo Usage (MCP)
+Key tools:
+- `see` - capture a screenshot with annotated element IDs. Always call this first to understand the UI state.
+- `click` - click elements by ID (`on: "B1"`), text query (`query: "Submit"`), or coordinates (`coords: "100,200"`).
+- `type` - type text into the focused element or a specific element (`on: "T1"`).
+- `scroll` - scroll on an element or at the current mouse position.
+- `hotkey` - press keyboard shortcuts (e.g. Cmd+S, Cmd+W).
+- `app` - launch, quit, switch, or focus applications.
+- `window` - focus, move, resize, close, or maximize windows.
+- `menu` - list or click native menu bar items (e.g. `path: "File > Save"`).
+- `dialog` - interact with system dialogs (click buttons, input text, handle file panels).
+- `clipboard` - read/write clipboard contents.
+- `image` - capture screenshots without annotation.
+
+### Testing Workflow
+1. Start the app with `bun run tauri dev`.
+2. Use Peekaboo `see` (with `app_target: "pzql"`) to capture the app window and get element IDs.
+3. Interact with elements using `click`, `type`, `scroll`, etc.
+4. Verify results with another `see` capture.
+
+### Screenshots
+Always save screenshots to `.screenshots/` in the project root (e.g. `path: "/Users/calum/code/github.com/0x63616c/pzql/.screenshots/my-screenshot.png"`). Never save to `/tmp` or the desktop.
 
 ## Library Selection Philosophy
 Pick libraries that are **typesafe, have good guardrails, and are hard for LLMs to get wrong**. When an LLM makes a mistake, it should be obvious - caught by the type checker, not hidden at runtime. Prefer small API surfaces over flexible-but-footgunny ones. This applies to every dependency choice.
@@ -33,12 +56,10 @@ Pick libraries that are **typesafe, have good guardrails, and are hard for LLMs 
 - **Biome** - linter + formatter (replaces ESLint/Prettier)
 - **Zustand** - state management (tiny API, excellent TypeScript inference, hard to misuse)
 - **TanStack Router** - routing (fully typesafe routes, params, and search params - compile-time errors for wrong paths)
-- **Playwright** - end-to-end testing (run via `bunx playwright test`)
-
 Lean on these libraries - do not reinvent the wheel. Use shadcn components and Tailwind utilities instead of writing custom CSS or building UI primitives from scratch. Every line of code is a liability.
 
 ## Documentation Lookup
-Use the **Context7 MCP** to fetch up-to-date docs for our stack (Tauri v2, React 19, Rust, Tailwind CSS, shadcn/ui, Vite, Playwright, Biome) before writing code that depends on library APIs. Don't guess at APIs from training data - pull current docs via Context7.
+Use the **Context7 MCP** to fetch up-to-date docs for our stack (Tauri v2, React 19, Rust, Tailwind CSS, shadcn/ui, Vite, Biome) before writing code that depends on library APIs. Don't guess at APIs from training data - pull current docs via Context7.
 
 ## Git
 Keep commits atomic - one logical change per commit. Don't bundle unrelated changes together.
