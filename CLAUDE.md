@@ -28,6 +28,14 @@ Use the **Context7 MCP** to fetch up-to-date docs for our stack (Tauri v2, React
 ## Git
 Keep commits atomic — one logical change per commit. Don't bundle unrelated changes together.
 
+## Git Hooks (lefthook)
+Pre-commit hooks run automatically via **lefthook** (config in `lefthook.yml`):
+- **Biome** — lint + format staged TS/JS/JSON/CSS files
+- **cargo fmt** — format staged Rust files
+- **cargo clippy** — lint staged Rust files
+
+To install hooks after cloning: `bunx lefthook install`
+
 ## Linting & Formatting
 - **Frontend (TS/CSS/JSON)**: `bunx @biomejs/biome check --write .`
 - **Rust**: `cargo fmt` (formatting) + `cargo clippy` (linting)
