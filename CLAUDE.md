@@ -21,8 +21,13 @@ Use [`johnlindquist/claude-hooks`](https://github.com/johnlindquist/claude-hooks
 - **Vite** — bundler/dev server
 - **shadcn/ui** — component library
 - **Tailwind CSS** — styling
+- **Biome** — linter + formatter (replaces ESLint/Prettier)
 
 Lean on these libraries — do not reinvent the wheel. Use shadcn components and Tailwind utilities instead of writing custom CSS or building UI primitives from scratch. Every line of code is a liability.
+
+## Linting & Formatting
+- **Frontend (TS/CSS/JSON)**: `bunx @biomejs/biome check --write .`
+- **Rust**: `cargo fmt` (formatting) + `cargo clippy` (linting)
 
 ## Architecture
 - `src/` — React/TypeScript frontend (Vite)
