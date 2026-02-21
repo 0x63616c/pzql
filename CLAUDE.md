@@ -20,12 +20,27 @@ Always use **bun** (not npm/yarn).
 - `bun run tauri build` - package desktop app
 
 ## Testing
-Use **Peekaboo** (MCP server) to test the running app. After making UI changes, verify them visually by controlling the app - take screenshots, click elements, type text, and confirm things work as expected. Don't just write code and hope it works - see it.
+
+Verify UI and backend changes by running the app in Chrome via the dev-server. This exercises real Rust logic through the WebSocket bridge - not just a screenshot of the WKWebView.
+
+### Dev verification workflow
+
+```sh
+# Terminal 1 - Rust dev-server (auto-recompiles on change)
+cd src-tauri && cargo watch -x 'run --features dev-server'
+
+# Terminal 2 - Vite frontend
+bun run dev
+
+# Open http://localhost:1420 in Chrome
+```
+
+The frontend detects no Tauri runtime and routes all IPC calls over WebSocket to port 1421. Real Rust runs. Use Peekaboo pointed at Chrome to verify visually.
 
 ### Peekaboo Usage (MCP)
 Key tools:
-- `see` - capture a screenshot with annotated element IDs. Always call this first to understand the UI state.
-- `click` - click elements by ID (`on: "B1"`), text query (`query: "Submit"`), or coordinates (`coords: "100,200"`).
+- `see` - capture a screenshot with annotated element IDs. Always call this first.
+- `click` - click elements by ID (`on: "B1"`), text query (`query: "Submit"`), or coordinates.
 - `type` - type text into the focused element or a specific element (`on: "T1"`).
 - `scroll` - scroll on an element or at the current mouse position.
 - `hotkey` - press keyboard shortcuts (e.g. Cmd+S, Cmd+W).
@@ -35,12 +50,6 @@ Key tools:
 - `dialog` - interact with system dialogs (click buttons, input text, handle file panels).
 - `clipboard` - read/write clipboard contents.
 - `image` - capture screenshots without annotation.
-
-### Testing Workflow
-1. Start the app with `bun run tauri dev`.
-2. Use Peekaboo `see` (with `app_target: "pzql"`) to capture the app window and get element IDs.
-3. Interact with elements using `click`, `type`, `scroll`, etc.
-4. Verify results with another `see` capture.
 
 ### Screenshots
 Always save screenshots to `.screenshots/` in the project root (e.g. `path: "/Users/calum/code/github.com/0x63616c/pzql/.screenshots/my-screenshot.png"`). Never save to `/tmp` or the desktop.
@@ -86,9 +95,11 @@ To install hooks after cloning: `bunx lefthook install`
 
 ## Architecture
 - `src/` - React/TypeScript frontend (Vite)
-- `src-tauri/src/` - Rust Tauri backend (commands, plugins)
-- IPC via `@tauri-apps/api` - frontend calls Rust with `invoke()`
-- New Tauri commands need: Rust fn in `lib.rs` + registered in `generate_handler![]` + TypeScript wrapper in `src/`
+- `src-tauri/` - Cargo workspace root
+  - `src-tauri/src/` - Rust Tauri backend (commands, dev-server)
+  - `src-tauri/crates/pzql-ipc/` - shared IPC types (WsCommandEntry, WsEventEntry)
+  - `src-tauri/crates/pzql-macros/` - proc macros (`#[command]`, `#[event]`)
+- IPC via dual-transport layer - frontend calls Rust through `src/ipc.ts`
 
 ## Theming
 Supports multiple themes (not just light/dark). All themes live in `src/themes/`, one file per theme.
@@ -123,15 +134,58 @@ This applies to ALL superpowers skills that dispatch work in parallel, including
 - Never use emojis unless the user explicitly asks for them.
 - Never use emdashes. Use hyphens or dashes instead, unless the user explicitly asks for emdashes.
 
-## Tauri Commands Pattern
-Rust:
-```rust
-#[tauri::command]
-fn my_command(arg: &str) -> String { ... }
-// Register in run(): .invoke_handler(tauri::generate_handler![my_command])
+## IPC: Commands and Events
+
+All frontend-backend communication uses the dual-transport IPC layer. **Never call `invoke()` or `emit()` directly.**
+
+### Adding a command (frontend calls Rust)
+
+1. Define the function in `src-tauri/src/` with `#[command]`:
+   ```rust
+   use pzql_macros::command;
+
+   #[command]
+   async fn my_command(arg: String) -> Result<String, String> {
+       Ok(format!("got: {arg}"))
+   }
+   ```
+2. Add to `collect_commands![]` in `src-tauri/src/lib.rs` (one line - for Tauri IPC + TS types).
+3. Add one line to `src/ws-bindings.ts` - TypeScript will not compile if you forget.
+4. Run `bun run tauri dev` once to regenerate `src/bindings.ts`.
+5. Call via `commands.myCommand(arg)` imported from `src/ipc.ts`.
+
+### Adding an event (Rust pushes to frontend)
+
+1. Define the struct with `#[event]`:
+   ```rust
+   use pzql_macros::event;
+
+   #[event]
+   #[derive(Serialize, Deserialize, specta::Type)]
+   struct MyEvent { field: String }
+   ```
+2. Emit: `MyEvent { field: "value".into() }.emit(&app_handle)?`
+3. Listen in TypeScript via `events` from `src/ipc.ts`.
+
+### Dev verification in Chrome
+
+```sh
+# Terminal 1
+cd src-tauri && cargo run --features dev-server
+
+# Terminal 2
+bun run dev
+
+# Open http://localhost:1420 in Chrome
 ```
-TypeScript:
-```ts
-import { invoke } from "@tauri-apps/api/core";
-await invoke<string>("my_command", { arg: "value" });
-```
+
+Full app with real Rust backend runs in Chrome. Claude uses Peekaboo on Chrome to verify.
+
+### Key files
+
+| File | Edit? | Purpose |
+|------|-------|---------|
+| `src/bindings.ts` | Never | Auto-generated by tauri-specta |
+| `src/ws-bindings.ts` | Per new command (1 line) | WS transport - TypeScript enforced |
+| `src/ws-client.ts` | Never | WebSocket transport layer |
+| `src/ipc.ts` | Never | Transport bridge |
