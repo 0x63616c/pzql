@@ -14,9 +14,6 @@ Always use **bun** (not npm/yarn).
 ## Testing
 Use **Playwright CLI** to test the app. Run tests with `bunx playwright test`.
 
-## Claude Hooks
-Use [`johnlindquist/claude-hooks`](https://github.com/johnlindquist/claude-hooks) for Claude hook development (full TypeScript hooks). All Claude configuration (hooks, settings, etc.) should be local to this project (`.claude/`) unless explicitly stated to be global.
-
 ## Frontend Stack
 - **Vite** — bundler/dev server
 - **shadcn/ui** — component library
